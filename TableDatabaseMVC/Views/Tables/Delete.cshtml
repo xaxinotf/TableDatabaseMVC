@@ -1,0 +1,33 @@
+﻿@model TableDatabaseMVC.Models.Table
+
+@{
+    ViewData["Title"] = "Delete Table";
+}
+
+<h1>Delete Table: @Model.Name</h1>
+
+<h3>Are you sure you want to delete this table?</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var column in Model.Columns)
+        {
+            <tr>
+                <td>@column.Name</td>
+                <td>@column.Type</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" name="name" value="@Model.Name" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

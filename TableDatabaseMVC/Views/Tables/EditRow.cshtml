@@ -1,0 +1,27 @@
+﻿@model TableDatabaseMVC.Models.Table
+
+@{
+    ViewData["Title"] = "Edit Row in " + Model.Name;
+    var rowIndex = ViewBag.RowIndex;
+    var row = Model.Rows[rowIndex];
+}
+
+<h1>Edit Row in @Model.Name</h1>
+
+<form asp-action="EditRow" method="post">
+    <input type="hidden" name="tableName" value="@Model.Name" />
+    <input type="hidden" name="rowIndex" value="@rowIndex" />
+    @for (int i = 0; i < Model.Columns.Count; i++)
+    {
+            <div class="mb-3">
+                <label class="form-label">@Model.Columns[i].Name (@Model.Columns[i].Type)</label>
+                <input type="text" name="values[@i]" class="form-control" value="@row.Values[i]" required />
+            </div>
+    }
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-action="Details" asp-route-name="@Model.Name" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+}

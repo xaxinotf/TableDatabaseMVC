@@ -1,0 +1,39 @@
+﻿@model TableDatabaseMVC.Models.Table
+
+@{
+    ViewData["Title"] = "Table Details";
+}
+
+<h1>Table: @Model.Name</h1>
+
+<h3>Columns</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            @foreach (var column in Model.Columns)
+            {
+                <th>@column.Name (@column.Type)</th>
+            }
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Rows.Count; i++)
+        {
+            var row = Model.Rows[i];
+            <tr>
+                @foreach (var value in row.Values)
+                {
+                    <td>@value</td>
+                }
+                <td>
+                    <a class="btn btn-warning btn-sm" asp-action="EditRow" asp-route-tableName="@Model.Name" asp-route-rowIndex="@i">Edit</a>
+                    <a class="btn btn-danger btn-sm" asp-action="DeleteRow" asp-route-tableName="@Model.Name" asp-route-rowIndex="@i">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-primary" asp-action="AddRow" asp-route-tableName="@Model.Name">Add New Row</a>
+<a asp-action="Index" class="btn btn-secondary">Back to Tables</a>

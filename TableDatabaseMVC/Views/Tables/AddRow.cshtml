@@ -1,0 +1,24 @@
+﻿@model TableDatabaseMVC.Models.Table
+
+@{
+    ViewData["Title"] = "Add Row to " + Model.Name;
+}
+
+<h1>Add New Row to @Model.Name</h1>
+
+<form asp-action="AddRow" method="post">
+    <input type="hidden" name="tableName" value="@Model.Name" />
+    @for (int i = 0; i < Model.Columns.Count; i++)
+    {
+        <div class="mb-3">
+            <label class="form-label">@Model.Columns[i].Name (@Model.Columns[i].Type)</label>
+            <input type="text" name="values[@i]" class="form-control" required />
+        </div>
+    }
+    <button type="submit" class="btn btn-primary">Add Row</button>
+    <a asp-action="Details" asp-route-name="@Model.Name" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

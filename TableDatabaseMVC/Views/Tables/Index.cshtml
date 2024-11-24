@@ -1,0 +1,33 @@
+﻿@model IEnumerable<TableDatabaseMVC.Models.Table>
+
+@{
+    ViewData["Title"] = "Tables";
+}
+
+<h1>Tables</h1>
+
+<a class="btn btn-primary" asp-action="Create">Create New Table</a>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Columns</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var table in Model)
+        {
+            <tr>
+                <td>@table.Name</td>
+                <td>@table.Columns.Count</td>
+                <td>
+                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-name="@table.Name">Edit</a>
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-name="@table.Name">Delete</a>
+                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-name="@table.Name">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

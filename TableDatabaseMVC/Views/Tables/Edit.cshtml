@@ -1,0 +1,89 @@
+﻿@model TableDatabaseMVC.Models.Table
+
+@{
+    ViewData["Title"] = "Edit Table";
+
+    var columnTypes = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "integer", Text = "Integer" },
+        new SelectListItem { Value = "real", Text = "Real" },
+        new SelectListItem { Value = "char", Text = "Char" },
+        new SelectListItem { Value = "string", Text = "String" },
+        new SelectListItem { Value = "$", Text = "Currency ($)" },
+        new SelectListItem { Value = "$Invl", Text = "Interval ($Invl)" }
+    };
+}
+
+<h1>Edit Table: @Model.Name</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" name="originalName" value="@Model.Name" />
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Table Name</label>
+        <input asp-for="Name" class="form-control" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <h4>Columns</h4>
+    <div id="columns">
+        @for (int i = 0; i < Model.Columns.Count; i++)
+        {
+            <div class="row mb-3">
+                <div class="col">
+                    <input type="text" name="Columns[@i].Name" class="form-control" value="@Model.Columns[i].Name" required />
+                </div>
+                <div class="col">
+                    <select asp-for="Columns[@i].Type" asp-items="@(new SelectList(columnTypes, "Value", "Text", Model.Columns[i].Type))" class="form-select" required>
+                        <option value="">Select Type</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-secondary" onclick="removeColumn(this)">Remove</button>
+                </div>
+            </div>
+        }
+    </div>
+    <button type="button" class="btn btn-secondary mb-3" onclick="addColumn()">Add Column</button>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        let columnIndex = @Model.Columns.Count;
+
+        function addColumn() {
+            const columnsDiv = document.getElementById('columns');
+            const newRow = document.createElement('div');
+            newRow.classList.add('row', 'mb-3');
+            newRow.innerHTML = `
+                <div class="col">
+                    <input type="text" name="Columns[${columnIndex}].Name" class="form-control" placeholder="Column Name" required />
+                </div>
+                <div class="col">
+                    <select name="Columns[${columnIndex}].Type" class="form-select" required>
+                        <option value="">Select Type</option>
+                        <option value="integer">Integer</option>
+                        <option value="real">Real</option>
+                        <option value="char">Char</option>
+                        <option value="string">String</option>
+                        <option value="$">Currency ($)</option>
+                        <option value="$Invl">Interval ($Invl)</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-secondary" onclick="removeColumn(this)">Remove</button>
+                </div>
+            `;
+            columnsDiv.appendChild(newRow);
+            columnIndex++;
+        }
+
+        function removeColumn(button) {
+            const row = button.closest('.row');
+            row.remove();
+        }
+    </script>
+}
