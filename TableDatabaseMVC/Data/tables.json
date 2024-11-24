@@ -1,26 +1,5 @@
 [
   {
-    "Name": "Vedmedi balayki",
-    "Columns": [
-      {
-        "Name": "1",
-        "Type": "integer"
-      },
-      {
-        "Name": "2",
-        "Type": "string"
-      }
-    ],
-    "Rows": [
-      {
-        "Values": [
-          1488,
-          "TESTYOPTABLYAT"
-        ]
-      }
-    ]
-  },
-  {
     "Name": "test1",
     "Columns": [
       {

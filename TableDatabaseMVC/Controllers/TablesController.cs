@@ -152,15 +152,25 @@ namespace TableDatabaseMVC.Controllers
             return View(table);
         }
 
-        // POST: Tables/DeleteConfirmed
+        // POST: Tables/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(string name)
         {
-            _tableService.DeleteTable(name);
+            var tables = _tableService.LoadTables();
+            var table = tables.FirstOrDefault(t => t.Name == name);
+            if (table == null)
+            {
+                return NotFound();
+            }
+
+            tables.Remove(table);
+            _tableService.SaveTables(tables);
             LogAndSaveChanges();
+
             return RedirectToAction(nameof(Index));
         }
+
 
         // GET: Tables/Details?name=TableName
         public IActionResult Details(string name)
